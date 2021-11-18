@@ -5,7 +5,7 @@ date: "11/17/2021"
 output: github_document
 ---
 
-```{r, setup, message = FALSE, echo = TRUE}
+```{r, setup, message = FALSE, echo = TRUE, results = 'hide'}
 
 library(tidyverse)
 library(p8105.datasets)
@@ -148,11 +148,39 @@ longstudy_df =
   tibble(path = list.files("./data", full.names = TRUE)) %>% 
   mutate(data = purrr::map(.x = path, ~read_csv(.x))) %>% 
   unnest(data) %>%
-  separate(path, c("dot", "folder", "txt"), sep = "/")
+  separate(path, c("dot", "folder", "txt"), sep = "/") %>%
+  separate(txt, c("txt_arm","sub_id", "file")) %>%
+  select(-c("dot", "folder", "file")) %>%
+  pivot_longer(
+    week_1:week_8, 
+    names_to = "week", 
+    names_prefix = "week_",
+    values_to = "values"
+  ) %>%
+  mutate(
+    week = as.factor(week)
+  )
+
+knitr::kable(longstudy_df)
 
 ```
 
+Spaghetti plot
 
+```{r, spaghetti_plot}
+
+longstudy_df %>% 
+  ggplot(aes(x = week, y = values, group = sub_id, color = sub_id)) + 
+  geom_line() + 
+  labs(
+    title = "Subject Observations by Week",
+    x = "Time (weeks)",
+    y = "Values"
+  ) + 
+  scale_color_hue(name = "Participant ID") +
+  facet_grid(. ~ txt_arm)
+
+```
 
 
 
