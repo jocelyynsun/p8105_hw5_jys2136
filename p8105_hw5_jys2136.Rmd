@@ -2,10 +2,10 @@
 title: "p8105_hw5_jys2136"
 author: "Jocelyn Sun"
 date: "11/17/2021"
-output: html_document
+output: github_document
 ---
 
-```{r}
+```{r, setup, message = FALSE, echo = TRUE}
 
 library(tidyverse)
 library(p8105.datasets)
@@ -21,7 +21,7 @@ knitr::opts_chunk$set(
 )
 
 scale_colour_discrete = scale_color_viridis_d
-scale_fill_discrete = scale_fill_discrete_d
+scale_fill_discrete = scale_fill_viridis_d
 
 theme_set(theme_bw()) + theme(axis.text.x = element_text(size = 9),
                               axis.text.y = element_text(size = 9),
