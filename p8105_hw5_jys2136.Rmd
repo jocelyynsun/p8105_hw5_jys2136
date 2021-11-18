@@ -34,7 +34,7 @@ theme_set(theme_bw()) + theme(axis.text.x = element_text(size = 9),
 ```{r, homicide_df}
 
 homicide_df = 
-  read_csv("./data/homicide-data.csv",  na = c("", "Unknown")) %>% 
+  read_csv("homicide-data.csv",  na = c("", "Unknown")) %>% 
   mutate(city_state = str_c(city, state),
          resolution = case_when(
            disposition == "Closed without arrest" ~ "unsolved",
@@ -144,7 +144,11 @@ results_df %>%
 ```{r}
 
 
-
+longstudy_df = 
+  tibble(path = list.files("./data", full.names = TRUE)) %>% 
+  mutate(data = purrr::map(.x = path, ~read_csv(.x))) %>% 
+  unnest(data) %>%
+  separate(path, c("dot", "folder", "txt"), sep = "/")
 
 ```
 
