@@ -141,8 +141,7 @@ results_df %>%
 
 # Problem 2
 
-```{r}
-
+```{r, tidying_data}
 
 longstudy_df = 
   tibble(path = list.files("./data", full.names = TRUE)) %>% 
@@ -182,6 +181,19 @@ longstudy_df %>%
 
 ```
 
+**add analyses here**
+
+# Problem 3
+
+```{r}
+
+set.seed(10)
+
+iris_with_missing = iris %>% 
+  map_df(~replace(.x, sample(1:150, 20), NA)) %>%
+  mutate(Species = as.character(Species))
+
+```
 
 
 
