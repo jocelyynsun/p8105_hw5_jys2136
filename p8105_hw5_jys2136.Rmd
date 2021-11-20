@@ -44,9 +44,6 @@ homicide_df =
   relocate(city_state) %>%
   filter(city_state != "TulsaAL")
 
-  
-
-
 ```
 
 Focusing on Baltimore, MD
@@ -129,13 +126,14 @@ head(results_df) %>%
 
 
 ```{r}
+
 results_df %>% 
   filter(city_state != "TulsaAL") %>% 
   mutate(city_state = fct_reorder(city_state, estimate)) %>% 
   ggplot(aes(x = city_state, y = estimate)) +
   geom_point() +
   geom_errorbar(aes(ymin = conf.low, ymax = conf.high)) +  
-  theme(axis.text.x = element_text(size = 5, angle = 90, vjust = 0.5, hjust = 1))
+  theme(axis.text.x = element_text(size = 7, angle = 90, vjust = 0.5, hjust = 1))
   
 ``` 
 
@@ -169,12 +167,15 @@ Spaghetti plot
 ```{r, spaghetti_plot}
 
 longstudy_df %>% 
+  mutate(txt_arm = recode(txt_arm, 
+                          "con" = "control",
+                          "exp" = "experimental")) %>%
   ggplot(aes(x = week, y = values, group = sub_id, color = sub_id)) + 
   geom_line() + 
   labs(
     title = "Subject Observations by Week",
     x = "Time (weeks)",
-    y = "Values"
+    y = "Observed Values"
   ) + 
   scale_color_hue(name = "Participant ID") +
   facet_grid(. ~ txt_arm)
